@@ -16,13 +16,13 @@ class PlayerEditForm extends React.Component {
   };
 
   handleNameChange = (e) => {
-    this.setState( { name: e.target.value });
+    this.setState({name: e.target.value});
   };
 
   handleRatingChange = (e) => {
     const tryRating = parseInt(e.target.value, 10);
     const rating = Math.min(Math.max(tryRating, 0), 10);
-    this.setState( { rating: rating });
+    this.setState({rating: rating});
   };
 
   handleMainCharacterChange = (e) => {
@@ -30,7 +30,7 @@ class PlayerEditForm extends React.Component {
       character: e.target.value,
       color: this.state.main.color,
     };
-    this.setState( { main: main });
+    this.setState({main: main});
   };
 
   handleMainColorChange = (e) => {
@@ -40,11 +40,11 @@ class PlayerEditForm extends React.Component {
       character: this.state.main.character,
       color: color,
     };
-    this.setState( { main: main });
+    this.setState({main: main});
   };
 
   handleSloganChange = (e) => {
-    this.setState( { slogan: e.target.value });
+    this.setState({slogan: e.target.value});
   };
 
   handleSubmit = () => {
@@ -112,20 +112,22 @@ class PlayerEditForm extends React.Component {
           placeholder="What is your victory tagline?"
           onChange={this.handleSloganChange}
         />
-        <Form.Field
-          control={Button}
-          type='button'
-          onClick={this.handleSubmit}
-        >
-          Submit
-        </Form.Field>
-        <Form.Field
-          control={Button}
-          type='button'
-          onClick={this.props.onFormClose}
-        >
-          Cancel
-        </Form.Field>
+        <Form.Group widths="equal">
+          <Form.Field
+            control={Button}
+            type='button'
+            onClick={this.handleSubmit}
+          >
+            Submit
+          </Form.Field>
+          <Form.Field
+            control={Button}
+            type='button'
+            onClick={this.props.onFormClose}
+          >
+            Cancel
+          </Form.Field>
+        </Form.Group>
       </Form>
     );
   }

@@ -32,21 +32,19 @@ class PlayerEditToggleableForm extends React.Component {
 
   renderAccessToForm() {
     return (
-      <div>
       <Button content="Add New Player"
               size="huge"
               icon="plus"
               labelPosition="left"
               onClick={this.handleFormOpen} />
-      </div>
     );
   }
 
   render() {
     return (
-      <div>
+      <span>
         {(this.state.isOpen) ? this.renderForm() : this.renderAccessToForm() }
-      </div>
+      </span>
     );
   }
 

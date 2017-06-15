@@ -1,8 +1,10 @@
 import React from 'react';
 import Generator from '../common/utils/generator';
+import Battler from '../common/utils/battle';
 import PlayerEditableList from "../common/player/PlayerEditableList";
 import PlayerEditToggleableForm from '../common/player/PlayerEditToggleableForm';
-import { Container, Divider, Header, Grid, Icon } from 'semantic-ui-react';
+import PlayerDebugFight from '../common/player/PlayerDebugFight';
+import { Button, Container, Divider, Header, Grid, Icon } from 'semantic-ui-react';
 
 class Main extends React.Component {
   state = {
@@ -25,6 +27,10 @@ class Main extends React.Component {
 
   handleEditFormSubmit = (attrs) => {
     this.updatePlayer(attrs);
+  };
+
+  handleFighting = () => {
+    Battler.generateRoundRobinMatches(this.state.players);
   };
 
   createPlayer = (player) => {
@@ -84,14 +90,22 @@ class Main extends React.Component {
           </Grid.Row>
         </Grid>
         <Divider />
-        <Grid columns={4}
+        <Grid columns={3}
               centered>
           <Grid.Row>
             <Grid.Column>
               <Container>
                 <PlayerEditToggleableForm onFormSubmit={this.handleCreateFormSubmit}/>
+                <Button content="Fight!"
+                        size="huge"
+                        icon="protect"
+                        labelPosition="right"
+                        onClick={this.handleFighting} />
               </Container>
             </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <PlayerDebugFight players={this.state.players}/>
           </Grid.Row>
         </Grid>
       </div>

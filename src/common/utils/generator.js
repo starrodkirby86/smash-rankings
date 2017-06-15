@@ -1,12 +1,14 @@
 import CHARACTERS from './characters';
+import * as Chance from 'chance';
 
 class Generator {
   static generatePlayers() {
+    let chance = new Chance();
     let players = [];
     for (let i = 0; i < 4; i++) {
       let p = {
         id: this.randomId(),
-        name: `Player ${i + 1}`,
+        name: chance.name(),
         slogan: "Go easy on me!",
         main: this.randomMain(),
         rating: this.randomRating(),
@@ -18,9 +20,10 @@ class Generator {
   }
 
   static newPlayer(attrs = {}) {
+    let chance = new Chance();
     return {
       id: this.randomId(),
-      name: attrs.name || `Falcomaster3000`,
+      name: attrs.name || chance.name(),
       slogan: attrs.slogan || "Go easy on me!",
       main: attrs.main || this.randomMain(),
       rating: attrs.rating || this.randomRating(),
