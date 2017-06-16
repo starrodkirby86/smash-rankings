@@ -2,11 +2,43 @@ import React from 'react';
 import Helper from '../../common/utils/helpers';
 import characterImage from '../../common/utils/reference';
 import PropTypes from 'prop-types';
-import { Grid, Header, Icon, Image, Table } from 'semantic-ui-react';
+import { Container, Grid, Header, Icon, Image, Table } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
 class ResultsLanding extends React.Component {
+  determineWinners() {
+    let winners = [];
+    if (this.props.sortedPlayers.length === 0)
+      return winners;
+    let counter = 0;
+    do {
+      winners.push(this.props.sortedPlayers[counter]);
+      counter++;
+    } while (counter !== this.props.sortedPlayers.length - 1 &&
+    Helper.getMatchStatistics(winners[0])[0] === Helper.getMatchStatistics(this.props.sortedPlayers[counter])[0]);
+    return winners;
+  }
+
+  renderWinners() {
+    let winners = this.determineWinners();
+    const winnerRenders = winners.map((winner, index) => (
+      <Header key={index}
+              as="h1">
+        {winner.name}
+      </Header>
+    ));
+    return (
+      <Container
+        text
+        textAlign="center">
+        <Header as="h1">And the {winners.length === 1 ? "winner is..." : "winners are..."}</Header>
+        {winnerRenders}
+      </Container>
+    );
+  }
+
   render() {
+
     const victoryCounts = this.props.sortedPlayers.map((player) => {
       return Helper.getMatchStatistics(player);
     });
@@ -24,7 +56,7 @@ class ResultsLanding extends React.Component {
                      size="tiny"/>
               <Header.Content>
                 <Link to={`results/${player.id}`}>
-                {player.name}
+                  {player.name}
                 </Link>
                 <Header.Subheader>
                   <Icon name="game"/>
@@ -43,6 +75,9 @@ class ResultsLanding extends React.Component {
       <Grid
         columns={3}
         centered>
+        <Grid.Row>
+          {this.renderWinners()}
+        </Grid.Row>
         <Grid.Row>
           <Table
             basic="very"

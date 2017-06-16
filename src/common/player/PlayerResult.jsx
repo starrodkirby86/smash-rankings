@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import CHARACTERS from '../utils/characters';
 import Helper from '../utils/helpers';
 import characterImage from '../utils/reference';
-import { Container, Grid, Icon, Image, Header, Table } from 'semantic-ui-react';
+import { Container, Flag, Grid, Icon, Image, Header, Table } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 class PlayerResult extends React.Component {
 
@@ -19,16 +20,18 @@ class PlayerResult extends React.Component {
             floated="left"
             src={characterImage(opponent.main.character, opponent.main.color)}/>
           <Header as="h4">
-            <Header.Content>{opponent.name}</Header.Content>
+            <Header.Content>
+              <Link to={`/results/${opponent.id}`}>{opponent.name}</Link>
+            </Header.Content>
             <Header.Subheader>
               <Icon name="game"/>
               Skill Level {opponent.rating}
             </Header.Subheader>
           </Header>
         </Table.Cell>
-        <Table.Cell>
-          {(match.victorious) ? 'Victory' : 'Loss'}
-        </Table.Cell>
+        {(match.victorious) ?
+          (<Table.Cell positive>Victory</Table.Cell>) :
+          (<Table.Cell negative>Loss</Table.Cell>)}
       </Table.Row>);
     });
     return (
@@ -70,7 +73,8 @@ class PlayerResult extends React.Component {
                   <Header.Content>
                     {this.props.player.name}
                     <Header.Subheader>
-                      {myCharacter.name} Player
+                      <Flag name={this.props.player.location.toLowerCase()} /> &nbsp;
+                      {myCharacter.name} Player from {this.props.player.location}
                     </Header.Subheader>
                     <Header.Subheader>
                       <Icon name="game"/>
@@ -78,6 +82,7 @@ class PlayerResult extends React.Component {
                     </Header.Subheader>
                   </Header.Content>
                 </Header>
+                <p>{this.props.player.slogan}</p>
               </Container>
               {this.createResultsTable()}
             </Grid.Column>

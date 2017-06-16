@@ -54,6 +54,7 @@ class Main extends React.Component {
             name: attrs.name,
             slogan: attrs.slogan,
             main: attrs.main,
+            location: attrs.location,
             rating: attrs.rating,
           });
         } else {

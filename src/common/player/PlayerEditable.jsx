@@ -37,6 +37,7 @@ class PlayerEditable extends React.Component {
         name={this.props.player.name}
         slogan={this.props.player.slogan}
         main={this.props.player.main}
+        location={this.props.player.location}
         rating={this.props.player.rating}
         onFormSubmit={this.handleSubmit}
         onFormClose={this.handleFormClose} />

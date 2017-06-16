@@ -12,6 +12,7 @@ class PlayerEditForm extends React.Component {
       character: "mario",
       color: 1
     },
+    location: this.props.location || 'us',
     slogan: this.props.slogan || '',
   };
 
@@ -43,6 +44,10 @@ class PlayerEditForm extends React.Component {
     this.setState({main: main});
   };
 
+  handleLocationChange = (e) => {
+    this.setState({location: e.target.value});
+  }
+
   handleSloganChange = (e) => {
     this.setState({slogan: e.target.value});
   };
@@ -53,6 +58,7 @@ class PlayerEditForm extends React.Component {
       name: this.state.name,
       slogan: this.state.slogan,
       main: this.state.main,
+      location: this.state.location,
       rating: this.state.rating,
     });
   }
@@ -111,6 +117,12 @@ class PlayerEditForm extends React.Component {
           value={this.state.slogan}
           placeholder="What is your victory tagline?"
           onChange={this.handleSloganChange}
+        />
+        <Form.Input
+          label="Country"
+          placeholder="Your country?"
+          value={this.state.location}
+          onChange={this.handleLocationChange}
         />
         <Form.Group widths="equal">
           <Form.Field

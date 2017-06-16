@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CHARACTERS from '../utils/characters';
 import characterImage from '../utils/reference';
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Card, Flag, Icon, Image } from 'semantic-ui-react';
 
 class PlayerCard extends React.Component {
   handleTrashClick = () => {
@@ -23,7 +23,8 @@ class PlayerCard extends React.Component {
             {this.props.player.name}
           </Card.Header>
           <Card.Meta>
-            {myCharacter.name} Player
+            <Flag name={this.props.player.location.toLowerCase()} /> &nbsp;
+            {myCharacter.name} Player from {this.props.player.location}
           </Card.Meta>
           <Card.Description>
             {this.props.player.slogan}
@@ -58,6 +59,7 @@ const playerPropTypes = {
   name: PropTypes.string.isRequired,
   slogan: PropTypes.string.isRequired,
   main: PropTypes.shape(characterPropTypes).isRequired,
+  location: PropTypes.string.isRequired,
   rating: PropTypes.number.isRequired,
 };
 
