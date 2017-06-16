@@ -1,4 +1,5 @@
 import CHARACTERS from './characters';
+import Helper from './helpers';
 import * as Chance from 'chance';
 
 class Battler {
@@ -16,24 +17,24 @@ class Battler {
     return chance.bool({likelihood: Math.floor((playerAScore / total) * 100)});
   }
 
+  // TODO: This gives false positives. Better correct it.
   static roundRobin(player, players) {
     let matches = [];
     for (let i = 0; i < players.length; i++) {
       const p = players[i];
       if (player.id === p.id)
         continue;
-      matches.push(
-        {
-          opponent: p.id,
-          victorious: this.fight(player, p),
-        }
-      );
+      const maybeMatch = Helper.findMatch(player, p);
+        matches.push(
+          {
+            opponent: p.id,
+            victorious: (maybeMatch === undefined) ? this.fight(player, p) : !maybeMatch.victorious,
+          }
+        );
     }
     return matches;
   }
 
-// TODO: Cache information so it shows more T/F kinds of things.
-  // TODO: Test accuracy of score
   static
   generateRoundRobinMatches(players) {
     for (let i = 0; i < players.length; i++) {

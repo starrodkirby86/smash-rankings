@@ -1,10 +1,10 @@
 import React from 'react';
 import Generator from '../common/utils/generator';
 import Battler from '../common/utils/battle';
-import PlayerEditableList from "../common/player/PlayerEditableList";
-import PlayerEditToggleableForm from '../common/player/PlayerEditToggleableForm';
-import PlayerDebugFight from '../common/player/PlayerDebugFight';
-import { Button, Container, Divider, Header, Grid, Icon } from 'semantic-ui-react';
+import Title from '../scenes/title/Title';
+import Editor from '../scenes/editor/Editor';
+import Results from '../scenes/rankings/Results';
+import { Route, Switch } from 'react-router-dom';
 
 class Main extends React.Component {
   state = {
@@ -65,52 +65,34 @@ class Main extends React.Component {
 
   render() {
     return (
-      <div>
-        <Header
-          as="h1"
-          size="huge"
-          icon
-          textAlign="center">
-          <Icon name="fire" />
-          The Smash Ranking
-        </Header>
-        <Divider />
-        <Grid columns={2}
-              centered>
-          <Grid.Row>
-            <Grid.Column>
-              <Container>
-                <PlayerEditableList
-                  players={this.state.players}
-                  onFormSubmit={this.handleEditFormSubmit}
-                  onTrashClick={this.handleTrashClick}
-                />
-              </Container>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <Divider />
-        <Grid columns={3}
-              centered>
-          <Grid.Row>
-            <Grid.Column>
-              <Container>
-                <PlayerEditToggleableForm onFormSubmit={this.handleCreateFormSubmit}/>
-                <Button content="Fight!"
-                        size="huge"
-                        icon="protect"
-                        labelPosition="right"
-                        onClick={this.handleFighting} />
-              </Container>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <PlayerDebugFight players={this.state.players}/>
-          </Grid.Row>
-        </Grid>
-      </div>
-  )
-    ;
+      <Switch>
+        <Route
+          exact
+          path="/"
+          component={Title}
+        />
+
+        <Route
+          exact
+          path="/edit"
+          render={(props) => (
+            <Editor onEditFormSubmit={this.handleEditFormSubmit}
+                    onTrashClick={this.handleTrashClick}
+                    onCreateFormSubmit={this.handleCreateFormSubmit}
+                    onHandleFighting={this.handleFighting}
+                    players={this.state.players}/>
+          )}
+        />
+
+        <Route
+          exact
+          path="/results"
+          render={(props) => (
+            <Results players={this.state.players} />
+          )}
+          />
+      </Switch>
+    );
   }
 }
 
