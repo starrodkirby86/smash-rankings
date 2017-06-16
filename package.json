@@ -6,14 +6,18 @@
     "chance": "^1.0.9",
     "enzyme": "^2.8.2",
     "jest": "^20.0.4",
+    "jsdom": "^11.0.0",
+    "jsdom-global": "^3.0.2",
     "prop-types": "^15.5.10",
     "react": "^15.6.0",
     "react-addons-test-utils": "^15.6.0",
+    "react-anime": "^0.3.4",
     "react-dom": "^15.6.0",
     "react-router-dom": "^4.1.1",
     "react-test-renderer": "^15.6.1",
     "semantic-ui-css": "^2.2.10",
-    "semantic-ui-react": "^0.68.5"
+    "semantic-ui-react": "^0.68.5",
+    "sinon": "^2.3.4"
   },
   "devDependencies": {
     "react-scripts": "1.0.7"

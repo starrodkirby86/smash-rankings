@@ -10,6 +10,10 @@ class Editor extends React.Component {
     isReadyToRedirect: false,
   };
 
+  componentWillMount() {
+    this.props.handleGeneratePlayers();
+  }
+
   handleFighting = () => {
     this.props.onHandleFighting();
     this.setState({isReadyToRedirect: true});
@@ -62,6 +66,7 @@ class Editor extends React.Component {
 }
 
 Editor.propTypes = {
+  handleGeneratePlayers: PropTypes.func.isRequired,
   onEditFormSubmit: PropTypes.func.isRequired,
   onTrashClick: PropTypes.func.isRequired,
   onCreateFormSubmit: PropTypes.func.isRequired,

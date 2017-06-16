@@ -1,8 +1,11 @@
+import 'jsdom-global/register';
 import React from 'react';
 import Helper from '../utils/helpers';
-import { shallow } from 'enzyme';
 import PlayerDebugFight from "../player/PlayerDebugFight";
-import Main from "../../scenes/main";
+import App from "../../App";
+import Editor from "../../scenes/Editor/editor";
+import sinon from 'sinon';
+import { mount, render, shallow } from 'enzyme';
 
 describe('<PlayerDebugFight />', () => {
   it('Should roughly be even between two evenly matched competitors', () => {
@@ -24,9 +27,9 @@ describe('<PlayerDebugFight />', () => {
     expect(Helper.fuzzyCheck(wrapper.state().victoryCount, 500, 50).toBeTruthy);
   });
 
-  // TODO: This will probably break when we change the layouting. Make this an individual button to shallow render
   it('Have every RR match correspond to each other (W/L opposite)', () => {
-    const wrapper = shallow(<Main />);
+    const wrapper = mount(<App />);
+    wrapper.find('button').simulate('click');
     wrapper.find('#roundRobinButton').simulate('submit');
     const players = wrapper.state().players;
     players.map((player) => {

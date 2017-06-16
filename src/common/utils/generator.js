@@ -2,18 +2,10 @@ import CHARACTERS from './characters';
 import * as Chance from 'chance';
 
 class Generator {
-  static generatePlayers() {
-    let chance = new Chance();
+  static generatePlayers(maxPlayers = 4) {
     let players = [];
-    for (let i = 0; i < 4; i++) {
-      let p = {
-        id: this.randomId(),
-        name: chance.name(),
-        slogan: "Go easy on me!",
-        main: this.randomMain(),
-        rating: this.randomRating(),
-        matches: [],
-      };
+    for (let i = 0; i < maxPlayers; i++) {
+      let p = this.newPlayer();
       players.push(p);
     }
     return players;

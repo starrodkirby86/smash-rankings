@@ -1,67 +1,42 @@
 import React from 'react';
 import Helper from '../../common/utils/helpers';
-import characterImage from '../../common/utils/reference';
+import PlayerResult from '../../common/player/PlayerResult';
+import ResultsLanding from './ResultsLanding';
 import PropTypes from 'prop-types';
-import { Grid, Header, Icon, Image, Table } from 'semantic-ui-react';
+import { Route, Switch } from 'react-router-dom';
 
 class Results extends React.Component {
+  state = {
+    sortedPlayers: [],
+  };
+
+  componentWillMount() {
+    this.setState({
+      sortedPlayers: this.props.players.sort((playerA, playerB) => {
+        const playerStatsA = Helper.getMatchStatistics(playerA);
+        const playerStatsB = Helper.getMatchStatistics(playerB);
+        return (playerStatsB[0] - playerStatsB[1]) - (playerStatsA[0] - playerStatsA[1]);
+      })
+    });
+  }
+
   render() {
-    const sortedPlayers = this.props.players.sort((playerA, playerB) => {
-      return Helper.getMatchStatistics(playerA)[0] < Helper.getMatchStatistics(playerB)[0];
-    });
-
-    const victoryCounts = sortedPlayers.map((player) => {
-      return Helper.getMatchStatistics(player);
-    });
-
-    const playerCells = sortedPlayers.map((player, index) => {
-      return(
-        <Table.Row
-          key={index}
-        >
-          <Table.Cell>
-            <Header as="h4"
-                    image>
-              <Image src={characterImage(player.main.character, player.main.color)}
-                     shape="rounded"
-                     size="tiny" />
-              <Header.Content>
-                {player.name}
-                <Header.Subheader>
-                  <Icon name="game" />
-                  Skill Level {player.rating}
-                </Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Table.Cell>
-          <Table.Cell>
-            {victoryCounts[index][0]} - {victoryCounts[index][1]}
-          </Table.Cell>
-        </Table.Row>
-      )
-    });
     return (
-      <Grid
-        columns={3}
-        centered>
-        <Grid.Row>
-        <Table
-          basic="very"
-          celled
-          collapsing>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Player</Table.HeaderCell>
-              <Table.HeaderCell>Record</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-
-          <Table.Body>
-            {playerCells}
-          </Table.Body>
-        </Table>
-        </Grid.Row>
-      </Grid>
+      <div>
+        <Switch>
+          <Route
+            path="/results/:id"
+            render={({match}) => (
+                <PlayerResult players={this.props.players}
+                              player={Helper.findPlayerById(this.state.sortedPlayers, match.params.id)} />
+            )}/>
+          <Route
+            path="/"
+            render={() => (
+              <ResultsLanding sortedPlayers={this.state.sortedPlayers}/>
+            )}/>
+        </Switch>
+      </div>
     );
   }
 }

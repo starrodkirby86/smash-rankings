@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import Main from "./scenes/main";
 import { Header, Divider, Icon } from 'semantic-ui-react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
 
 class App extends Component {
   render() {
     return (
-      <Router>
+      <Router history={createHistory()}>
         <div>
           <Header
             as="h1"

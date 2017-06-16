@@ -9,13 +9,19 @@ import { Route, Switch } from 'react-router-dom';
 class Main extends React.Component {
   state = {
     players: [],
+    maxPlayers: 4,
   };
 
-  componentDidMount() {
+  handleGeneratePlayers = () => {
     this.setState(
-      {players: Generator.generatePlayers()}
+      {players: Generator.generatePlayers(this.state.maxPlayers)}
     );
-  }
+  };
+
+  handleMaxPlayerChange = (e) => {
+    const number = parseInt(e.target.value, 10);
+    this.setState({maxPlayers: number});
+  };
 
   handleCreateFormSubmit = (player) => {
     this.createPlayer(player);
@@ -30,7 +36,7 @@ class Main extends React.Component {
   };
 
   handleFighting = () => {
-    Battler.generateRoundRobinMatches(this.state.players);
+    Battler.roundRobin(this.state.players);
   };
 
   createPlayer = (player) => {
@@ -69,14 +75,18 @@ class Main extends React.Component {
         <Route
           exact
           path="/"
-          component={Title}
+          render={(props) => (
+            <Title maxPlayers={this.state.maxPlayers}
+                   onMaxPlayersChange={this.handleMaxPlayerChange}/>
+          )}
         />
 
         <Route
           exact
           path="/edit"
           render={(props) => (
-            <Editor onEditFormSubmit={this.handleEditFormSubmit}
+            <Editor handleGeneratePlayers={this.handleGeneratePlayers}
+                    onEditFormSubmit={this.handleEditFormSubmit}
                     onTrashClick={this.handleTrashClick}
                     onCreateFormSubmit={this.handleCreateFormSubmit}
                     onHandleFighting={this.handleFighting}
@@ -85,12 +95,11 @@ class Main extends React.Component {
         />
 
         <Route
-          exact
           path="/results"
           render={(props) => (
-            <Results players={this.state.players} />
+            <Results players={this.state.players}/>
           )}
-          />
+        />
       </Switch>
     );
   }

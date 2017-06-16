@@ -1,5 +1,4 @@
 import CHARACTERS from './characters';
-import Helper from './helpers';
 import * as Chance from 'chance';
 
 class Battler {
@@ -17,28 +16,43 @@ class Battler {
     return chance.bool({likelihood: Math.floor((playerAScore / total) * 100)});
   }
 
-  // TODO: This gives false positives. Better correct it.
-  static roundRobin(player, players) {
-    let matches = [];
-    for (let i = 0; i < players.length; i++) {
-      const p = players[i];
-      if (player.id === p.id)
-        continue;
-      const maybeMatch = Helper.findMatch(player, p);
-        matches.push(
-          {
-            opponent: p.id,
-            victorious: (maybeMatch === undefined) ? this.fight(player, p) : !maybeMatch.victorious,
-          }
-        );
-    }
-    return matches;
+  /*
+   PlayerA and PlayerB duke it out. Their match record is saved into their 'matches' section.
+   */
+  static assignMatch(playerA, playerB) {
+    const result = this.fight(playerA, playerB);
+    playerA.matches.push(
+      {
+        opponent: playerB.id,
+        victorious: result,
+      }
+    );
+    playerB.matches.push(
+      {
+        opponent: playerA.id,
+        victorious: !result,
+      }
+    );
   }
 
-  static
-  generateRoundRobinMatches(players) {
-    for (let i = 0; i < players.length; i++) {
-      players[i].matches = this.roundRobin(players[i], players);
+  /*
+   Clears the matches for a single player.
+   */
+  static clearMatches(player) {
+    player.matches.length = 0;
+  }
+
+  static roundRobin(players) {
+    players.map((player) => {
+      this.clearMatches(player);
+      return 0;
+    });
+    for (let i = 0; i < players.length - 1; i++)
+    {
+      for (let j = i + 1; j < players.length; j++)
+      {
+        this.assignMatch(players[i], players[j]);
+      }
     }
   }
 }
